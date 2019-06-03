@@ -6,12 +6,14 @@ import Html.Events exposing (onClick)
 
 
 type alias Model =
-    { count : Int }
+    { count : Int
+    }
 
 
 initialModel : Model
 initialModel =
-    { count = 0 }
+    { count = 0
+    }
 
 
 type Msg
@@ -34,7 +36,7 @@ view model =
     div []
         [ button [ onClick Increment ] [ text "+1" ]
         , div [] [ text <| String.fromInt model.count ]
-        , button [ onClick Decrement ] [ text "-1" ]
+        , button [ onClick Decrement ] [ text <| "-1" ]
         ]
 
 
