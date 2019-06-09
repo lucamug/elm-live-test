@@ -6,17 +6,231 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>elm-live testing</title>
+    <style>
+        button {
+            font-size: 20px;
+        }
+    </style>
+    <style>
+        .container {
+            width: 360px;
+            height: 450px;
+            background-color: #333;
+            float: left;
+        }
+
+        .tangram {
+            padding: 20px 30px;
+            position: relative;
+        }
+
+        /* xxxxx */
+
+        .tangram--basic .triangle--pink {
+            transform: translate(160px, -2px)rotate(180deg)
+        }
+
+        .tangram--basic .triangle--purple {
+            transform: translate(79px, 79px)rotate(270deg)
+        }
+
+        .tangram--basic .triangle--turquoise {
+            transform: translate(150px, 109px)rotate(45deg)
+        }
+
+        .tangram--basic .triangle--yellow {
+            transform: translate(1px, 1px)
+        }
+
+        .tangram--basic .triangle--red {
+            transform: translate(54px, -52px)rotate(90deg)
+        }
+
+        .tangram--basic .square--orange {
+            transform: translate(122px, 66px)rotate(45deg)
+        }
+
+        .tangram--basic .parallelogram--green {
+            transform: translate(45px, 146px)rotate(-45deg)skew(45deg)
+        }
+
+        .tangram--cat .triangle--pink {
+            transform: translate(0px, 0px)
+        }
+
+        .tangram--cat .triangle--purple {
+            transform: translate(52px, 0px)rotate(180deg)
+        }
+
+        .tangram--cat .triangle--turquoise {
+            transform: translate(10px, 132px)rotate(180deg)
+        }
+
+        .tangram--cat .triangle--yellow {
+            transform: translate(85px, 132px)
+        }
+
+        .tangram--cat .triangle--red {
+            transform: translate(100px, 245px)rotate(45deg)
+        }
+
+        .tangram--cat .square--orange {
+            transform: translate(16px, 70px)rotate(45deg)
+        }
+
+        .tangram--cat .parallelogram--green {
+            transform: translate(222px, 310px)skew(-45deg)
+        }
+
+        .tangram--swan .triangle--pink {
+            transform: translate(-6px, 155px)
+        }
+
+        .tangram--swan .triangle--purple {
+            transform: translate(3px, 4px)rotate(45deg)
+        }
+
+        .tangram--swan .triangle--turquoise {
+            transform: translate(-3px, 189px)rotate(180deg)
+        }
+
+        .tangram--swan .triangle--yellow {
+            transform: translate(57px, 194px)rotate(135deg)
+        }
+
+        .tangram--swan .triangle--red {
+            transform: translate(127px, 136px)rotate(90deg)
+        }
+
+        .tangram--swan .square--orange {
+            transform: translate(12px, 116px)rotate(45deg)
+        }
+
+        .tangram--swan .parallelogram--green {
+            transform: translate(42px, 38px)rotate(45deg)skew(45deg)
+        }
+
+        .tangram--rabbit .triangle--pink {
+            transform: translate(61px, 333px)rotate(45deg)
+        }
+
+        .tangram--rabbit .triangle--purple {
+            transform: translate(20px, 210px)rotate(180deg)
+        }
+
+        .tangram--rabbit .triangle--turquoise {
+            transform: translate(99px, 307px)rotate(135deg)
+        }
+
+        .tangram--rabbit .triangle--yellow {
+            transform: translate(60px, 120px)rotate(135deg)
+        }
+
+        .tangram--rabbit .triangle--red {
+            transform: translate(130px, 196px)rotate(-45deg)
+        }
+
+        .tangram--rabbit .square--orange {
+            transform: translate(0px, 74px)
+        }
+
+        .tangram--rabbit .parallelogram--green {
+            transform: translate(76px, 0px)skew(-45deg)
+        }
+
+        /* xxxxxx */
+
+        .triangle {
+            width: 0;
+            height: 0;
+            position: absolute;
+            transition: all 2s;
+        }
+
+        .triangle--pink {
+            border-left: 50px solid #F0AD00;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+        }
+
+        .triangle--purple {
+            border-left: 50px solid #F0AD00;
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+        }
+
+        .triangle--turquoise {
+            border-left: 70px solid #60B5CC;
+            border-top: 70px solid transparent;
+            border-bottom: 70px solid transparent;
+        }
+
+        .triangle--yellow {
+            border-left: 100px solid #5A6378;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+        }
+
+        .triangle--red {
+            border-left: 100px solid #60B5CC;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+        }
+
+        .square {
+            position: absolute;
+            transition: all 2s;
+        }
+
+        .square--orange {
+            background-color: #7FD13B;
+            width: 70px;
+            height: 70px;
+        }
+
+        .parallelogram {
+            position: absolute;
+            transition: all 2s;
+        }
+
+        .parallelogram--green {
+            background-color: #7FD13B;
+            width: 64px;
+            height: 70px;
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <h1 style="background-color: black; color: white">elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing
+        <div style="position: fixed; top: 0; left: 0; z-index: 101">
+            <button onclick="showCompiling('You changed Main.elm. Rebuilding!')">Show Compiling</button>
+            <button onclick="showErrorExample()">Show Error</button>
+            <button onclick="hideCompiling()">Hide Compiling</button>
+            <button onclick="hideError()">Hide Error</button>
+            <br>
+            <button onclick="showCompiling('You changed Main.elm. Rebuilding!',true)">Show Compiling</button>
+            <button onclick="showErrorExampleNoAnimation()">Show Error</button>
+            <button onclick="hideCompiling(true)">Hide Compiling</button>
+            <button onclick="hideError(true)">Hide Error</button>
+            <br>
+            <button onclick="el = document.getElementsByClassName('tangram')[0]; el.className=el.className.replace(/tangram--(\S*)/,'tangram--basic');">Basic</button>
+            <button onclick="el = document.getElementsByClassName('tangram')[0]; el.className=el.className.replace(/tangram--(\S*)/,'tangram--cat');">Cat</button>
+            <button onclick="el = document.getElementsByClassName('tangram')[0]; el.className=el.className.replace(/tangram--(\S*)/,'tangram--swan');">Swan</button>
+            <button onclick="el = document.getElementsByClassName('tangram')[0]; el.className=el.className.replace(/tangram--(\S*)/,'tangram--rabbit');">Rabbit</button>
+        </div>
+
+
+        <h1 style="background-color: black; color: white">elm-live Testing elm-live
+            Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing
             elm-live Testing elm-live Testing elm-live Testing
-            elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing
+            elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live
+            Testing
             elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing </h1>
         <h1>elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing
             elm-live Testing elm-live Testing elm-live Testing
-            elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing
+            elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live
+            Testing
             elm-live Testing elm-live Testing elm-live Testing elm-live Testing elm-live Testing </h1>
     </header>
     <script>
@@ -99,19 +313,32 @@
             }
         }
 
-        var speed = 400
-        var delay = 20
-
-        function showError(error, cwd, ide) {
-            var coloredError = restoreColor(error, cwd, ide)
-            console.log.apply(this, restoreColor(error, cwd, ide, 'console'))
-            hideCompiling('fast')
-            setTimeout(function () {
-                showError_(coloredError)
-            }, delay)
+        function speedAndDelay(noAnimation) {
+            if (noAnimation) {
+                return {
+                    speed: 0,
+                    delay: 0
+                }
+            } else {
+                return {
+                    speed: 400,
+                    delay: 20
+                }
+            }
         }
 
-        function showError_(error) {
+        function showError(error, cwd, ide, noAnimation) {
+            var animation = speedAndDelay(noAnimation);
+            var coloredError = restoreColor(error, cwd, ide)
+            console.log.apply(this, restoreColor(error, cwd, ide, 'console'))
+            hideCompiling(true)
+            setTimeout(function () {
+                showError_(coloredError, noAnimation)
+            }, animation.delay)
+        }
+
+        function showError_(error, noAnimation) {
+            var animation = speedAndDelay(noAnimation);
             var nodeContainer = document.getElementById('elm-live:elmErrorContainer')
             if (!nodeContainer) {
                 nodeContainer = document.createElement('div')
@@ -119,45 +346,53 @@
                 document.body.appendChild(nodeContainer)
             }
             nodeContainer.innerHTML =
-                "<div id='elm-live:elmErrorBackground' style='z-index: 100; perspective: 500px; transition: opacity " +
-                speed +
+                "<div id='elm-live:elmErrorBackground' style='z-index: 100; perspective: 500px; opacity: 0; transition: opacity " +
+                animation.speed +
                 "ms; position: fixed; top: 0; left: 0; background-color: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;'>" +
                 "<div onclick='elmLive.hideError()' style='background-color: rgba(0,0,0,0); position: fixed; top:0; left:0; bottom:0; right:0'></div>" +
-                "<pre id='elm-live:elmError' style='transform: rotateX(-90deg); transition: transform " +
-                speed +
+                "<pre id='elm-live:elmError' style='transform: " +
+                (noAnimation ? "" : "rotateX(-90deg);") +
+                "transition: transform " +
+                animation.speed +
                 "ms; transform-style: preserve-3d; font-size: 16px; overflow: scroll; background-color: rgba(20, 20, 20, 0.9); color: #ddd; width: 70%; height: 60%; padding: 30px'>" +
                 error +
                 '</pre>' +
                 '</div>'
             setTimeout(function () {
-                document.getElementById('elm-live:elmErrorBackground').style.opacity = 1
-                document.getElementById('elm-live:elmError').style.transform = 'rotateX(0deg)'
-            }, delay)
+                var el1 = document.getElementById('elm-live:elmErrorBackground');
+                var el2 = document.getElementById('elm-live:elmError');
+                if (el1) {
+                    el1.style.opacity = 1
+                    if (!noAnimation && el2) {
+                        el2.style.transform = 'rotateX(0deg)'
+                    }
+                }
+            }, animation.delay)
         }
 
-        function hideError(velocity) {
+        function hideError(noAnimation) {
+            var animation = speedAndDelay(noAnimation);
             var node = document.getElementById('elm-live:elmErrorContainer')
             if (node) {
-                if (velocity === 'fast') {
+                document.getElementById('elm-live:elmErrorBackground').style.opacity = 0
+                document.getElementById('elm-live:elmError').style.transform = 'rotateX(90deg)'
+                setTimeout(function () {
                     document.getElementById('elm-live:elmErrorContainer').remove()
-                } else {
-                    document.getElementById('elm-live:elmErrorBackground').style.opacity = 0
-                    document.getElementById('elm-live:elmError').style.transform = 'rotateX(90deg)'
-                    setTimeout(function () {
-                        document.getElementById('elm-live:elmErrorContainer').remove()
-                    }, speed)
-                }
+                }, animation.speed)
             }
         }
 
-        function showCompiling(message) {
-            hideError('fast')
+        function showCompiling(message, noAnimation) {
+            console.log(`%c${message}`, `color:${colorConverter("green", "console")}`);
+            var animation = speedAndDelay(noAnimation);
+            hideError(true)
             setTimeout(function () {
-                showCompiling_(message)
-            }, delay)
+                showCompiling_(message, noAnimation)
+            }, animation.delay)
         }
 
-        function showCompiling_(message) {
+        function showCompiling_(message, noAnimation) {
+            var animation = speedAndDelay(noAnimation);
             var nodeContainer = document.getElementById('elm-live:elmCompilingContainer')
             if (!nodeContainer) {
                 nodeContainer = document.createElement('div')
@@ -165,6 +400,7 @@
                 document.body.appendChild(nodeContainer)
             }
             nodeContainer.innerHTML =
+
                 '<style>' +
                 '#loading {' +
                 '  display: inline-block;' +
@@ -180,78 +416,95 @@
                 '}' +
                 '</style>' +
                 "<div id='elm-live:elmCompilingBackground' style='z-index: 100; transition: opacity " +
-                speed +
+                animation.speed +
                 "ms; opacity: 0; position: fixed; top: 0; left: 0; background-color: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column'>" +
                 "<div onclick='elmLive.hideCompiling()' style='background-color: rgba(0,0,0,0); position: fixed; top:0; left:0; bottom:0; right:0'></div>" +
+
+                '<div class="container">' +
+                '<div class="tangram tangram--basic">' +
+                '<div class="triangle triangle--pink"></div>' +
+                '<div class="triangle triangle--purple"></div>' +
+                '<div class="square square--orange"></div>' +
+                '<div class="triangle triangle--turquoise"></div>' +
+                '<div class="triangle triangle--yellow"></div>' +
+                '<div class="triangle triangle--red"></div>' +
+                '<div class="parallelogram parallelogram--green"></div>' +
+                '</div>' +
+                '</div>' +
+
                 "<div id='loading'>" +
                 '</div>' +
                 "<div style='text-align: center; color: #fff; padding: 30px; font-size: 24px; font-weight: bold; font-family: sans-serif'>" +
-                message +
+                (message ? message : "") +
                 '</div>' +
                 '</div>'
             setTimeout(function () {
                 document.getElementById('elm-live:elmCompilingBackground').style.opacity = 1
-            }, delay)
+            }, animation.delay)
         }
 
-        function hideCompiling(velocity) {
+        function hideCompiling(noAnimation) {
+            var animation = speedAndDelay(noAnimation);
             var node = document.getElementById('elm-live:elmCompilingContainer')
             if (node) {
-                if (velocity === 'fast') {
+                document.getElementById('elm-live:elmCompilingBackground').style.opacity = 0
+                setTimeout(function () {
                     document.getElementById('elm-live:elmCompilingContainer').remove()
-                } else {
-                    document.getElementById('elm-live:elmCompilingBackground').style.opacity = 0
-                    setTimeout(function () {
-                        document.getElementById('elm-live:elmCompilingContainer').remove()
-                    }, speed)
-                }
+                }, animation.speed)
             }
         }
     </script>
 
 
     <script>
+        function showErrorExample() {
+            showError(
+                JSON.parse(
+                    '{"type":"compile-errors","errors":[{"path":"src/Main.elm","name":"Main","problems":[{"title":"NAMING ERROR","region":{"start":{"line":35,"column":11},"end":{"line":35,"column":18}},"message":["I cannot find a `button2` variable:\\n\\n35|         [ button2 [ onClick Increment ] [ text \\"Increment +1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":36,"column":20},"end":{"line":36,"column":25}},"message":["I cannot find a `textt` variable:\\n\\n36|         , div [] [ textt <| String.fromInt model.count ]\\n                       ",{"bold":false,"underline":false,"color":"red","string":"^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"text"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"e"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"max"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"negate"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":37,"column":11},"end":{"line":37,"column":18}},"message":["I cannot find a `button3` variable:\\n\\n37|         , button3 [ onClick Decrement ] [ text \\"-1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]}]}]}'
+                ),
+                "xxx",
+                "atom",
+                false
+            );
+        }
+
+        function showErrorExampleNoAnimation() {
+            showError(
+                JSON.parse(
+                    '{"type":"compile-errors","errors":[{"path":"src/Main.elm","name":"Main","problems":[{"title":"NAMING ERROR","region":{"start":{"line":35,"column":11},"end":{"line":35,"column":18}},"message":["I cannot find a `button2` variable:\\n\\n35|         [ button2 [ onClick Increment ] [ text \\"Increment +1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":36,"column":20},"end":{"line":36,"column":25}},"message":["I cannot find a `textt` variable:\\n\\n36|         , div [] [ textt <| String.fromInt model.count ]\\n                       ",{"bold":false,"underline":false,"color":"red","string":"^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"text"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"e"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"max"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"negate"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":37,"column":11},"end":{"line":37,"column":18}},"message":["I cannot find a `button3` variable:\\n\\n37|         , button3 [ onClick Decrement ] [ text \\"-1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]}]}]}'
+                ),
+                "xxx",
+                "atom",
+                true
+            );
+        }
         window.elmLive = {
             hideError: hideError,
             hideCompiling: hideCompiling,
+            showErrorExample: showErrorExample
         };
-        showCompiling("Blah blah blah");
+
         setTimeout(function () {
-            showError(
-                JSON.parse(
-                    '{"type":"compile-errors","errors":[{"path":"src/Main.elm","name":"Main","problems":[{"title":"NAMING ERROR","region":{"start":{"line":35,"column":11},"end":{"line":35,"column":18}},"message":["I cannot find a `button2` variable:\\n\\n35|         [ button2 [ onClick Increment ] [ text \\"Increment +1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":36,"column":20},"end":{"line":36,"column":25}},"message":["I cannot find a `textt` variable:\\n\\n36|         , div [] [ textt <| String.fromInt model.count ]\\n                       ",{"bold":false,"underline":false,"color":"red","string":"^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"text"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"e"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"max"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"negate"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":37,"column":11},"end":{"line":37,"column":18}},"message":["I cannot find a `button3` variable:\\n\\n37|         , button3 [ onClick Decrement ] [ text \\"-1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]}]}]}'
-                ),
-                "xxx",
-                "atom"
-            );
-        }, 250)
-        setTimeout(function () {
-            showError(
-                JSON.parse(
-                    '{"type":"compile-errors","errors":[{"path":"src/Main.elm","name":"Main","problems":[{"title":"NAMING ERROR","region":{"start":{"line":35,"column":11},"end":{"line":35,"column":18}},"message":["I cannot find a `button2` variable:\\n\\n35|         [ button2 [ onClick Increment ] [ text \\"Increment +1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":36,"column":20},"end":{"line":36,"column":25}},"message":["I cannot find a `textt` variable:\\n\\n36|         , div [] [ textt <| String.fromInt model.count ]\\n                       ",{"bold":false,"underline":false,"color":"red","string":"^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"text"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"e"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"max"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"negate"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":37,"column":11},"end":{"line":37,"column":18}},"message":["I cannot find a `button3` variable:\\n\\n37|         , button3 [ onClick Decrement ] [ text \\"-1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]}]}]}'
-                ),
-                "xxx",
-                "atom"
-            );
-        }, 500)
-        setTimeout(function () {
-            showCompiling();
-        }, 750)
-        setTimeout(function () {
-            hideCompiling();
-        }, 1000)
-        setTimeout(function () {
-            hideError();
-        }, 1250)
-        setTimeout(function () {
-            showError(
-                JSON.parse(
-                    '{"type":"compile-errors","errors":[{"path":"src/Main.elm","name":"Main","problems":[{"title":"NAMING ERROR","region":{"start":{"line":35,"column":11},"end":{"line":35,"column":18}},"message":["I cannot find a `button2` variable:\\n\\n35|         [ button2 [ onClick Increment ] [ text \\"Increment +1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":36,"column":20},"end":{"line":36,"column":25}},"message":["I cannot find a `textt` variable:\\n\\n36|         , div [] [ textt <| String.fromInt model.count ]\\n                       ",{"bold":false,"underline":false,"color":"red","string":"^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"text"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"e"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"max"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"negate"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]},{"title":"NAMING ERROR","region":{"start":{"line":37,"column":11},"end":{"line":37,"column":18}},"message":["I cannot find a `button3` variable:\\n\\n37|         , button3 [ onClick Decrement ] [ text \\"-1\\" ]\\n              ",{"bold":false,"underline":false,"color":"red","string":"^^^^^^^"},"\\nThese names seem close though:\\n\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"button"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"Sub.none"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan"},"\\n    ",{"bold":false,"underline":false,"color":"yellow","string":"atan2"},"\\n\\n",{"bold":false,"underline":true,"color":null,"string":"Hint"},": Read <https://elm-lang.org/0.19.0/imports> to see how `import`\\ndeclarations work in Elm."]}]}]}'
-                ),
-                "xxx",
-                "atom"
-            );
-        }, 1500)
+            showCompiling("Blah blah blah");
+        }, 0)
+        // setTimeout(function () {
+        //     showErrorExample();
+        // }, 1000)
+        // setTimeout(function () {
+        //     showErrorExample();
+        // }, 2000)
+        // setTimeout(function () {
+        //     showCompiling();
+        // }, 3000)
+        // setTimeout(function () {
+        //     hideCompiling();
+        // }, 4000)
+        // setTimeout(function () {
+        //     hideError();
+        // }, 5000)
+        // setTimeout(function () {
+        //     showErrorExample();
+        // }, 6000)
     </script>
 </body>
 
