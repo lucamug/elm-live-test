@@ -84,13 +84,25 @@ cssLine figureName index s =
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Increment ] [ text "+1 bbb" ]
-        , div [] [ text <| String.fromInt model.count ]
-        , button [ onClick Decrement ] [ text <| "-1" ]
-        , Html.pre []
-            [ text "<style>\n\n"
+        -- [ button [ onClick Increment ] [ text "+1 bbb" ]
+        -- , div [] [ text <| String.fromInt model.count ]
+        -- , button [ onClick Decrement ] [ text <| "-1" ]
+        [ Html.pre []
+            [ text """
+                .container {
+                   width: 360px;
+                   height: 450px;
+                   background-color: #333;
+                   float: left;
+                }
+
+                .tangram {
+                   padding: 20px 30px;
+                   position: relative;
+                }
+                """
             , text <|
-                String.join "" <|
+                String.join "\n" <|
                     List.concat <|
                         List.map
                             (\shape ->
@@ -99,7 +111,66 @@ view model =
                                     shape.shape
                             )
                             shapes
-            , text "\n\n</style>"
+            , text """
+           .triangle {
+               width: 0;
+               height: 0;
+               position: absolute;
+               transition: all 2s;
+           }
+
+           .triangle--pink {
+               border-left: 50px solid #F0AD00;
+               border-top: 50px solid transparent;
+               border-bottom: 50px solid transparent;
+           }
+
+           .triangle--purple {
+               border-left: 50px solid #F0AD00;
+               border-top: 50px solid transparent;
+               border-bottom: 50px solid transparent;
+           }
+
+           .triangle--turquoise {
+               border-left: 70px solid #60B5CC;
+               border-top: 70px solid transparent;
+               border-bottom: 70px solid transparent;
+           }
+
+           .triangle--yellow {
+               border-left: 100px solid #5A6378;
+               border-top: 100px solid transparent;
+               border-bottom: 100px solid transparent;
+           }
+
+           .triangle--red {
+               border-left: 100px solid #60B5CC;
+               border-top: 100px solid transparent;
+               border-bottom: 100px solid transparent;
+           }
+
+           .square {
+               position: absolute;
+               transition: all 2s;
+           }
+
+           .square--orange {
+               background-color: #7FD13B;
+               width: 70px;
+               height: 70px;
+           }
+
+           .parallelogram {
+               position: absolute;
+               transition: all 2s;
+           }
+
+           .parallelogram--green {
+               background-color: #7FD13B;
+               width: 64px;
+               height: 70px;
+           }
+        """
             ]
         ]
 
@@ -121,22 +192,65 @@ type alias Shape =
     }
 
 
+names :
+    { basic : String
+    , cat : String
+    , green : String
+    , orange : String
+    , parallelogram : String
+    , pink : String
+    , purple : String
+    , rabbit : String
+    , red : String
+    , square : String
+    , swan : String
+    , triangle : String
+    , turquoise : String
+    , yellow : String
+    , separator : String
+    }
+names =
+    { triangle = "triangle"
+    , square = "square"
+    , parallelogram = "parallelogram"
+
+    -- sub-types
+    , pink = "pink"
+    , purple = "purple"
+    , turquoise = "turquoise"
+    , yellow = "yellow"
+    , red = "red"
+    , orange = "orange"
+    , green = "green"
+
+    -- shapes
+    , rabbit = "rabbit"
+    , swan = "swan"
+    , cat = "cat"
+    , basic = "basic"
+
+    -- separator
+    , separator = "--"
+    }
+
+
 shapesName : Array.Array String
 shapesName =
     Array.fromList
-        [ "triangle--pink"
-        , "triangle--purple"
-        , "triangle--turquoise"
-        , "triangle--yellow"
-        , "triangle--red"
-        , "square--orange"
-        , "parallelogram--green"
+        [ names.triangle ++ names.separator ++ names.pink
+        , names.triangle ++ names.separator ++ names.purple
+        , names.triangle ++ names.separator ++ names.turquoise
+        , names.triangle ++ names.separator ++ names.yellow
+        , names.triangle ++ names.separator ++ names.red
+        , names.square ++ names.separator ++ names.orange
+        , names.parallelogram ++ names.separator ++ names.green
         ]
 
 
 shapes : List { name : String, shape : List Shape }
 shapes =
-    [ { name = "basic"
+    [ { -- basic
+        name = names.basic
       , shape =
             [ Shape 160 -2 180 0
             , Shape 79 79 270 0
@@ -147,7 +261,8 @@ shapes =
             , Shape 45 146 -45 45
             ]
       }
-    , { name = "cat"
+    , { -- cat
+        name = names.cat
       , shape =
             [ Shape 0 0 0 0
             , Shape 52 0 180 0
@@ -158,7 +273,8 @@ shapes =
             , Shape 222 310 0 -45
             ]
       }
-    , { name = "swan"
+    , { -- swan
+        name = names.swan
       , shape =
             [ Shape -6 155 0 0
             , Shape 3 4 45 0
@@ -169,7 +285,8 @@ shapes =
             , Shape 42 38 45 45
             ]
       }
-    , { name = "rabbit"
+    , { -- rabbit
+        name = names.rabbit
       , shape =
             [ Shape 61 333 45 0
             , Shape 20 210 180 0
