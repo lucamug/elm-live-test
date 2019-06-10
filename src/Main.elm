@@ -136,7 +136,7 @@ adjust value =
 
 defaultColor : String
 defaultColor =
-    "#fff"
+    "#000"
 
 
 classCss : String
