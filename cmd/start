@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-node_modules/.bin/elm-live src/Main.elm --open=true --ide=vscode --start-page="index.html" --dir=docs --port=8001 -- --output="docs/js/main.js" --debug
+node_modules/.bin/elm-live src/Main.elm --open=true --ide=vscode --start-page="index.html" --dir=docs --port=8001 -- --output="docs/js/main.js" 
 
 # node_modules/.bin/elm-live src/Main.elm --open

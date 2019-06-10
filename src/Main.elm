@@ -45,9 +45,39 @@ cssLine figureName index s =
 
         translate =
             "translate("
-                ++ adjust s.x
+                ++ adjust
+                    (s.x
+                        - 160
+                        + (if String.startsWith names.cat figureName then
+                            moveX.cat
+
+                           else if String.startsWith names.rabbit figureName then
+                            moveX.rabbit
+
+                           else if String.startsWith names.swan figureName then
+                            moveX.swan
+
+                           else
+                            moveX.basic
+                          )
+                    )
                 ++ "px,"
-                ++ adjust s.y
+                ++ adjust
+                    (s.y
+                        - 340
+                        + (if String.startsWith names.cat figureName then
+                            moveY.cat
+
+                           else if String.startsWith names.rabbit figureName then
+                            moveY.rabbit
+
+                           else if String.startsWith names.swan figureName then
+                            moveY.swan
+
+                           else
+                            moveY.basic
+                          )
+                    )
                 ++ "px)"
 
         rotate =
@@ -218,27 +248,27 @@ names :
     , prefix : String
     }
 names =
-    { triangle = "triangle"
-    , square = "square"
-    , parallelogram = "parallelogram"
+    { triangle = "tri"
+    , square = "squ"
+    , parallelogram = "par"
 
     -- sub-types
-    , pink = "pink"
-    , purple = "purple"
-    , turquoise = "turquoise"
-    , yellow = "yellow"
-    , red = "red"
-    , orange = "orange"
-    , green = "green"
+    , pink = "1"
+    , purple = "2"
+    , turquoise = "3"
+    , yellow = "4"
+    , red = "5"
+    , orange = "6"
+    , green = "7"
 
     -- shapes
-    , rabbit = "rabbit"
-    , swan = "swan"
+    , rabbit = "rab"
+    , swan = "swa"
     , cat = "cat"
-    , basic = "basic"
+    , basic = "bas"
 
     -- separator
-    , separator = "--"
+    , separator = "-"
 
     -- prefix
     , prefix = "xxx"
@@ -258,14 +288,22 @@ shapesName =
         ]
 
 
-moveX_1 : Int
-moveX_1 =
-    45
+moveX : { basic : Int, cat : Int, rabbit : Int, swan : Int }
+moveX =
+    { basic = 45
+    , cat = 15
+    , swan = 60
+    , rabbit = 40
+    }
 
 
-moveY_1 : Int
-moveY_1 =
-    90
+moveY : { basic : Int, cat : Int, rabbit : Int, swan : Int }
+moveY =
+    { basic = 160
+    , cat = 0
+    , swan = 40
+    , rabbit = -20
+    }
 
 
 shapes : List { name : String, shape : List Shape }
@@ -273,13 +311,13 @@ shapes =
     [ { -- basic
         name = names.basic
       , shape =
-            [ Shape (160 + moveX_1) (-2 + moveY_1) 180 0 "#F0AD00"
-            , Shape (79 + moveX_1) (79 + moveY_1) 270 0 "#F0AD00"
-            , Shape (150 + moveX_1) (109 + moveY_1) 45 0 "#60B5CC"
-            , Shape (1 + moveX_1) (1 + moveY_1) 0 0 "#5A6378"
-            , Shape (54 + moveX_1) (-52 + moveY_1) 90 0 "#60B5CC"
-            , Shape (122 + moveX_1) (66 + moveY_1) 45 0 "#7FD13B"
-            , Shape (45 + moveX_1) (146 + moveY_1) -45 45 "#7FD13B"
+            [ Shape 160 -2 180 0 "#F0AD00"
+            , Shape 79 79 270 0 "#F0AD00"
+            , Shape 150 109 45 0 "#60B5CC"
+            , Shape 1 1 0 0 "#5A6378"
+            , Shape 54 -52 90 0 "#60B5CC"
+            , Shape 122 66 45 0 "#7FD13B"
+            , Shape 45 146 -45 45 "#7FD13B"
             ]
       }
     , { -- cat
