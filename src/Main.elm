@@ -22,6 +22,11 @@ type Msg
     | Decrement
 
 
+cssSeparator : String
+cssSeparator =
+    ""
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -35,14 +40,14 @@ update msg model =
 cssLine : String -> Int -> Shape -> String
 cssLine figureName index s =
     let
-        shapeName =
+        maybeShapeName =
             Array.get index shapesName
 
         translate =
             "translate("
-                ++ String.fromInt s.x
+                ++ adjust s.x
                 ++ "px,"
-                ++ String.fromInt s.y
+                ++ adjust s.y
                 ++ "px)"
 
         rotate =
@@ -70,15 +75,43 @@ cssLine figureName index s =
         ""
 
     else
-        ".tangram--"
-            ++ figureName
-            ++ " ."
-            ++ Maybe.withDefault "xxx" shapeName
-            -- s.name
-            ++ "{"
-            ++ "transform:"
-            ++ transform
-            ++ "}"
+        let
+            shapeName =
+                Maybe.withDefault "xxx" maybeShapeName
+        in
+        String.join cssSeparator
+            [ classCss ++ figureName ++ " " ++ classCss ++ shapeName ++ "{"
+            , "transform:" ++ transform ++ ";"
+            , if s.color == defaultColor then
+                ""
+
+              else if String.startsWith names.triangle shapeName then
+                "border-left-color:" ++ s.color ++ ";"
+
+              else
+                "background-color:" ++ s.color ++ ";"
+            , "}"
+            ]
+
+
+ratio : Int
+ratio =
+    2
+
+
+adjust : Int -> String
+adjust value =
+    String.fromInt (value // 2)
+
+
+defaultColor : String
+defaultColor =
+    "#fff"
+
+
+classCss : String
+classCss =
+    "." ++ names.prefix ++ names.separator
 
 
 view : Model -> Html Msg
@@ -88,21 +121,8 @@ view model =
         -- , div [] [ text <| String.fromInt model.count ]
         -- , button [ onClick Decrement ] [ text <| "-1" ]
         [ Html.pre []
-            [ text """
-                .container {
-                   width: 360px;
-                   height: 450px;
-                   background-color: #333;
-                   float: left;
-                }
-
-                .tangram {
-                   padding: 20px 30px;
-                   position: relative;
-                }
-                """
-            , text <|
-                String.join "\n" <|
+            [ text <|
+                String.join cssSeparator <|
                     List.concat <|
                         List.map
                             (\shape ->
@@ -111,66 +131,52 @@ view model =
                                     shape.shape
                             )
                             shapes
-            , text """
-           .triangle {
-               width: 0;
-               height: 0;
-               position: absolute;
-               transition: all 2s;
-           }
-
-           .triangle--pink {
-               border-left: 50px solid #F0AD00;
-               border-top: 50px solid transparent;
-               border-bottom: 50px solid transparent;
-           }
-
-           .triangle--purple {
-               border-left: 50px solid #F0AD00;
-               border-top: 50px solid transparent;
-               border-bottom: 50px solid transparent;
-           }
-
-           .triangle--turquoise {
-               border-left: 70px solid #60B5CC;
-               border-top: 70px solid transparent;
-               border-bottom: 70px solid transparent;
-           }
-
-           .triangle--yellow {
-               border-left: 100px solid #5A6378;
-               border-top: 100px solid transparent;
-               border-bottom: 100px solid transparent;
-           }
-
-           .triangle--red {
-               border-left: 100px solid #60B5CC;
-               border-top: 100px solid transparent;
-               border-bottom: 100px solid transparent;
-           }
-
-           .square {
-               position: absolute;
-               transition: all 2s;
-           }
-
-           .square--orange {
-               background-color: #7FD13B;
-               width: 70px;
-               height: 70px;
-           }
-
-           .parallelogram {
-               position: absolute;
-               transition: all 2s;
-           }
-
-           .parallelogram--green {
-               background-color: #7FD13B;
-               width: 64px;
-               height: 70px;
-           }
-        """
+            , text <|
+                String.join cssSeparator
+                    [ classCss ++ names.triangle ++ "," ++ classCss ++ names.square ++ "," ++ classCss ++ names.parallelogram ++ "{"
+                    , "position:absolute;"
+                    , "transition:all 2s;"
+                    , "}"
+                    , classCss ++ names.triangle ++ "{"
+                    , "width:0;"
+                    , "height:0;"
+                    , "}"
+                    , classCss ++ names.triangle ++ names.separator ++ names.pink ++ "{"
+                    , "border-left:" ++ adjust 50 ++ "px solid " ++ defaultColor ++ ";"
+                    , "border-top:" ++ adjust 50 ++ "px solid transparent;"
+                    , "border-bottom:" ++ adjust 50 ++ "px solid transparent;"
+                    , "}"
+                    , classCss ++ names.triangle ++ names.separator ++ names.purple ++ "{"
+                    , "border-left:" ++ adjust 50 ++ "px solid " ++ defaultColor ++ ";"
+                    , "border-top:" ++ adjust 50 ++ "px solid transparent;"
+                    , "border-bottom:" ++ adjust 50 ++ "px solid transparent;"
+                    , "}"
+                    , classCss ++ names.triangle ++ names.separator ++ names.turquoise ++ "{"
+                    , "border-left:" ++ adjust 70 ++ "px solid " ++ defaultColor ++ ";"
+                    , "border-top:" ++ adjust 70 ++ "px solid transparent;"
+                    , "border-bottom:" ++ adjust 70 ++ "px solid transparent;"
+                    , "}"
+                    , classCss ++ names.triangle ++ names.separator ++ names.yellow ++ "{"
+                    , "border-left:" ++ adjust 100 ++ "px solid " ++ defaultColor ++ ";"
+                    , "border-top:" ++ adjust 100 ++ "px solid transparent;"
+                    , "border-bottom:" ++ adjust 100 ++ "px solid transparent;"
+                    , "}"
+                    , classCss ++ names.triangle ++ names.separator ++ names.red ++ "{"
+                    , "border-left:" ++ adjust 100 ++ "px solid " ++ defaultColor ++ ";"
+                    , "border-top:" ++ adjust 100 ++ "px solid transparent;"
+                    , "border-bottom:" ++ adjust 100 ++ "px solid transparent;"
+                    , "}"
+                    , classCss ++ names.square ++ names.separator ++ names.orange ++ "{"
+                    , "background-color:" ++ defaultColor ++ ";"
+                    , "width:" ++ adjust 70 ++ "px;"
+                    , "height:" ++ adjust 70 ++ "px;"
+                    , "}"
+                    , classCss ++ names.parallelogram ++ names.separator ++ names.green ++ "{"
+                    , "background-color:" ++ defaultColor ++ ";"
+                    , "width:" ++ adjust 64 ++ "px;"
+                    , "height:" ++ adjust 70 ++ "px;"
+                    , "}"
+                    ]
             ]
         ]
 
@@ -189,6 +195,7 @@ type alias Shape =
     , y : Int
     , rotate : Int
     , skew : Int
+    , color : String
     }
 
 
@@ -208,6 +215,7 @@ names :
     , turquoise : String
     , yellow : String
     , separator : String
+    , prefix : String
     }
 names =
     { triangle = "triangle"
@@ -231,6 +239,9 @@ names =
 
     -- separator
     , separator = "--"
+
+    -- prefix
+    , prefix = "xxx"
     }
 
 
@@ -247,54 +258,64 @@ shapesName =
         ]
 
 
+moveX_1 : Int
+moveX_1 =
+    45
+
+
+moveY_1 : Int
+moveY_1 =
+    90
+
+
 shapes : List { name : String, shape : List Shape }
 shapes =
     [ { -- basic
         name = names.basic
       , shape =
-            [ Shape 160 -2 180 0
-            , Shape 79 79 270 0
-            , Shape 150 109 45 0
-            , Shape 1 1 0 0
-            , Shape 54 -52 90 0
-            , Shape 122 66 45 0
-            , Shape 45 146 -45 45
+            [ Shape (160 + moveX_1) (-2 + moveY_1) 180 0 "#F0AD00"
+            , Shape (79 + moveX_1) (79 + moveY_1) 270 0 "#F0AD00"
+            , Shape (150 + moveX_1) (109 + moveY_1) 45 0 "#60B5CC"
+            , Shape (1 + moveX_1) (1 + moveY_1) 0 0 "#5A6378"
+            , Shape (54 + moveX_1) (-52 + moveY_1) 90 0 "#60B5CC"
+            , Shape (122 + moveX_1) (66 + moveY_1) 45 0 "#7FD13B"
+            , Shape (45 + moveX_1) (146 + moveY_1) -45 45 "#7FD13B"
             ]
       }
     , { -- cat
         name = names.cat
       , shape =
-            [ Shape 0 0 0 0
-            , Shape 52 0 180 0
-            , Shape 10 132 180 0
-            , Shape 85 132 0 0
-            , Shape 100 245 45 0
-            , Shape 16 70 45 0
-            , Shape 222 310 0 -45
+            [ Shape 0 0 0 0 defaultColor
+            , Shape 52 0 180 0 defaultColor
+            , Shape 10 132 180 0 defaultColor
+            , Shape 85 132 0 0 defaultColor
+            , Shape 100 245 45 0 defaultColor
+            , Shape 16 70 45 0 defaultColor
+            , Shape 222 310 0 -45 defaultColor
             ]
       }
     , { -- swan
         name = names.swan
       , shape =
-            [ Shape -6 155 0 0
-            , Shape 3 4 45 0
-            , Shape -3 189 180 0
-            , Shape 57 194 135 0
-            , Shape 127 136 90 0
-            , Shape 12 116 45 0
-            , Shape 42 38 45 45
+            [ Shape -6 155 0 0 defaultColor
+            , Shape 3 4 45 0 defaultColor
+            , Shape -3 189 180 0 defaultColor
+            , Shape 57 194 135 0 defaultColor
+            , Shape 127 136 90 0 defaultColor
+            , Shape 12 116 45 0 defaultColor
+            , Shape 42 38 45 45 defaultColor
             ]
       }
     , { -- rabbit
         name = names.rabbit
       , shape =
-            [ Shape 61 333 45 0
-            , Shape 20 210 180 0
-            , Shape 99 307 135 0
-            , Shape 60 120 135 0
-            , Shape 130 196 -45 0
-            , Shape 0 74 0 0
-            , Shape 76 0 0 -45
+            [ Shape 61 333 45 0 defaultColor
+            , Shape 20 210 180 0 defaultColor
+            , Shape 99 307 135 0 defaultColor
+            , Shape 60 120 135 0 defaultColor
+            , Shape 130 196 -45 0 defaultColor
+            , Shape 0 74 0 0 defaultColor
+            , Shape 76 0 0 -45 defaultColor
             ]
       }
     ]
@@ -460,20 +481,10 @@ shapes =
        border-bottom: 100px solid transparent;
    }
 
-   .square {
-       position: absolute;
-       transition: all 2s;
-   }
-
    .square--orange {
        background-color: #7FD13B;
        width: 70px;
        height: 70px;
-   }
-
-   .parallelogram {
-       position: absolute;
-       transition: all 2s;
    }
 
    .parallelogram--green {
