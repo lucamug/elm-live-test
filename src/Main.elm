@@ -36,9 +36,9 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ Html.h1 [] [ text "Elm Live" ]
-        , button [ onClick Increment ] [ text "+1 rrr" ]
-        , div [] [ text <| String.fromInt model.count ]
+        [ Html.h1 [] [ text "Elm Live xxx" ]
+        , button [ onClick Increment ] [ text "+1 aaa xxx" ]
+        , div [] [ text <| String.fromInt model.count ] yyy
         , button [ onClick Decrement ] [ text "-1 test2" ]
         ]
 
